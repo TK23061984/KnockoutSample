@@ -1,0 +1,68 @@
+<style>
+.green{color:green;}
+.red{color:red;}
+.blue{color:blue;}    
+</style>
+
+<p>Friends(<span data-bind="text:friends().length"></span>)</p>
+
+<ul data-bind="foreach:friends">
+    <li data-bind="css:styleFriend"><span data-bind="text:name"></span></li>
+    <input type="checkbox" data-bind="checked:knowJS"/>
+    <input data-bind="value:favLib, visible:knowJS"/>
+    <input data-bind="value:noLib"/>
+    <button data-bind="click:removeFriend">x</button>
+</ul>
+
+<button data-bind="click:addFriend, enable:friends().length < 5">Add Friend</button>
+
+
+<script src="knockout-3.4.0.js"></script>
+<script src="knockout.mapping-2.4.1.js"></script>
+
+<script>
+    
+ function GetFriend()
+ {
+     return{
+         name:'Thanga',
+         knowJS:'true',
+         favLib:'JQuery',
+         noLib:3
+     }
+ }
+ 
+ function Friend(friend){
+     var map = ko.mapping.fromJS(friend);
+     map.removeFriend = function(){
+        obj.friends.remove(map);
+     }
+        map.styleFriend = ko.computed(function(){
+            var lib = map.noLib();
+            if(lib > 15) map.removeFriend();
+            if(lib > 10) return 'blue';
+            if(lib > 5) return 'green';
+            if(lib < 3) return 'red';
+        })
+     return map;
+ }
+    
+//function Friend(name){
+//    this.name = name;
+//    this.knowJS = ko.observable(false);
+//    this.favLib = ko.observable('');   
+//    this.removeFriend = function(){
+//        obj.friends.remove(this);
+//    } 
+//}    
+
+var obj = {
+    friends:ko.observableArray([new Friend(new GetFriend())])
+};
+
+obj.addFriend = function(){
+    obj.friends.push(new Friend(new GetFriend()));
+}
+
+ko.applyBindings(obj);
+</script>

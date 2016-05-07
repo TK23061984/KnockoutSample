@@ -1,0 +1,31 @@
+<ul data-bind="foreach:friends">
+    <li><span data-bind="text:name"></span></li>
+    <input type="checkbox" data-bind="checked:knowJS"/>
+    <input data-bind="value:favLib, visible:knowJS"/>
+    <button data-bind="click:removeFriend">x</button>
+</ul>
+
+<button data-bind="click:addFriend">Add Friend</button>
+
+
+<script src="knockout-3.4.0.js"></script>
+<script>
+function Friend(name){
+    this.name = name;
+    this.knowJS = ko.observable(false);
+    this.favLib = ko.observable('');   
+    this.removeFriend = function(){
+        obj.friends.remove(this);
+    } 
+}    
+
+var obj = {
+    friends:ko.observableArray([new Friend('Ram'), new Friend('Kumar'), new Friend('Raj')])
+};
+
+obj.addFriend = function(){
+    obj.friends.push(new Friend('new'));
+}
+
+ko.applyBindings(obj);
+</script>

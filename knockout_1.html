@@ -1,0 +1,26 @@
+<p>First Name:<input data-bind="value:firstName, valueUpdate:'keyup'"/></p>
+<p>Last Name:<input data-bind="value:lastName"/></p>
+<p>First Name:<span data-bind="text:firstName"></span></p>
+
+<p>Full Name:<span data-bind="text:fullName"></span></p>
+
+
+<Script src="knockout-3.4.0.js"></Script>
+<Script>
+    var obj={
+    firstName :ko.observable('Thangakumar'), // To observe the changes in view
+    lastName:ko.observable('Dhanasekaran')
+    };
+    
+    //computed 
+    obj.fullName = ko.computed(function(){
+        return obj.firstName() + ' ' + obj.lastName();
+    })
+    
+    obj.firstName.subscribe(function(){
+        console.log('First name has changed !');
+    })
+    
+    //To bind objects with HTML controlls
+    ko.applyBindings(obj);
+</Script>
